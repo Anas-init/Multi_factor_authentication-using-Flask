@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="form-signin">
+      <div class="text-center mb-4">
+        <i class="bi bi-shield-check display-4 text-primary"></i>
+        <h1 class="h3 mb-3">Setup Two-Factor Authentication</h1>
+        <p class="text-muted">Secure your account with 2FA</p>
+      </div>
+
+      <div class="instructions mb-4">
+        <h5 class="mb-3"><i class="bi bi-list-check me-2"></i>Instructions</h5>
+        <ol class="mb-0">
+          <li>Download <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&gl=US" target="_blank" class="text-primary text-decoration-none">Google Authenticator</a> on your mobile device</li>
+          <li>Open the app and tap the "+" button</li>
+          <li>Scan the QR code below or enter the secret key manually</li>
+          <li>Once configured, click the button below to verify</li>
+        </ol>
+      </div>
+
+      <div class="qr-container mb-4">
+        <img src="data:image/png;base64, {{ qr_image }}" alt="QR Code" class="img-fluid">
+      </div>
+
+      <div class="secret-token mb-4">
+        <label class="form-label text-muted mb-2">Secret Key</label>
+        <div class="d-flex align-items-center">
+          <input type="text" class="form-control" id="secret" value="{{ secret }}" readonly>
+          <button type="button" class="btn copy-btn ms-2" onclick="copySecret()">
+            <i class="bi bi-clipboard"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a href="{{ url_for('accounts.verify_two_factor_auth') }}" class="btn btn-primary">
+          <i class="bi bi-check-circle me-2"></i>Verify Setup
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+function copySecret() {
+    const copyText = document.getElementById("secret");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    
+    // Show feedback
+    const button = document.querySelector('.copy-btn');
+    const originalHTML = button.innerHTML;
+    button.innerHTML = '<i class="bi bi-check"></i>';
+    setTimeout(() => {
+        button.innerHTML = originalHTML;
+    }, 2000);
+}
+</script>
+{% endblock %}
