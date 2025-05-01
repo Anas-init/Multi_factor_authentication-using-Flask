@@ -24,5 +24,11 @@ htmlcov/
 .coverage
 .coverage.*
 *,cover
-
+__pycache__/
+*.pyc
+instance/
+.env
+env/
+*.sqlite3
+*.db
 migrations/
